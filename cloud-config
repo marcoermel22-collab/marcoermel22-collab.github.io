@@ -1,0 +1,30 @@
+#cloud-config
+
+users:
+ - name: vmadmin
+   sudo: ALL=(ALL) NOPASSWD:ALL
+   groups: users, admin
+   shell: /bin/bash
+   lock_passwd: false
+   plain_text_passwd: 'sml12345'
+
+# login ssh and console with password
+ssh_pwauth: true
+disable_root: false
+
+packages:
+ - apache2
+
+write_files:
+- content: |
+   <html>
+    <body>
+     <h1>Catalog App</h1>
+    </body>
+   </html>
+  path: /var/www/html/index.html
+  permissions: '0644'
+
+runcmd:
+- mkdir -p /home/vmadmin/test
+- systemctl start apache2  # Start Apache service
